@@ -3,7 +3,12 @@
 @morado: purple;
 
 body {
+	background-attachment: fixed;
 	background-color: black;
+	background-image: url('css/img/img_fondo.jpg');
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
 	color: white;
 	text-align: center;
 
@@ -11,12 +16,36 @@ body {
 		.border-radius(13px,13px,13px,13px);
 	}
 
+	.otros {
+		margin:0 auto;
+		max-width: 934px;
+
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			text-align: center;
+
+			li {
+				display: inline-block;
+				margin:0 4px;
+				.transition;
+			}
+
+			li:hover {
+				.box-shadow(0 0 8px 8px rgba(0, 0, 0, 0.3));
+				.scale(1.3);
+			}
+		}
+	}
+
 	.puzzle-container {
 		background: @morado;
 		.border-radius(13px,13px,13px,13px);
+		.box-shadow(0 0 8px 8px rgba(0, 0, 0, 0.3));
 		margin: 0 auto;
 		padding: 12px;
 		width: auto;
-		max-width: 938px;
+		max-width: 934px;
 	}
 }
