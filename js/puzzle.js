@@ -1,4 +1,4 @@
-       const PUZZLE_DIFFICULTY = 5;
+        const PUZZLE_DIFFICULTY = 5;
         const PUZZLE_HOVER_TINT = '#009900';
 
         var _stage;
@@ -44,6 +44,7 @@
             _currentPiece = null;
             _currentDropPiece = null;
             _stage.drawImage(_img, 0, 0, _puzzleWidth, _puzzleHeight, 0, 0, _puzzleWidth, _puzzleHeight);
+            $('body').removeClass('loading');
             createTitle("Click para empezar!");
             buildPieces();
         }
@@ -214,6 +215,7 @@
         jQuery(document).ready(function($){
             $('.otros ul li').on('click', function(e){
                 e.preventDefault;
+                $('body').addClass('loading');
                 init( $(this).find('img').attr('data-big') );
             })
         });
