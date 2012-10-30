@@ -39,7 +39,7 @@
 
 @import "css/elements.less";
 
-@morado: purple;
+@morado: #800080;
 
 body {
 	background-attachment: fixed;
@@ -97,4 +97,18 @@ body {
 		width: auto;
 		max-width: 934px;
 	}
+}
+
+
+body.loading {
+
+	canvas {
+		display: none;
+	}
+
+	.puzzle-container {
+		background: url('img/load.gif') 50% 50% no-repeat @morado;
+		min-height:547px;
+	}
+
 }
