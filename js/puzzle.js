@@ -1,3 +1,5 @@
+ jQuery(document).ready(function($){
+
         const PUZZLE_DIFFICULTY = 5;
         const PUZZLE_HOVER_TINT = '#009900';
 
@@ -32,11 +34,11 @@
             initPuzzle();
         }
         function setCanvas(){
-            _canvas = document.getElementById('canvas');
-            _stage = _canvas.getContext('2d');
-            _canvas.width = _puzzleWidth;
-            _canvas.height = _puzzleHeight;
-            _canvas.style.border = "1px solid gray";
+            _canvas = $('#canvas');
+            _stage = _canvas[0].getContext('2d');
+            _canvas[0].width = _puzzleWidth;
+            _canvas[0].height = _puzzleHeight;
+            _canvas[0].style.border = "1px solid gray";
         }
         function initPuzzle(){
             _pieces = [];
@@ -100,12 +102,12 @@
         }
         function onPuzzleClick(e){
             if(e.layerX || e.layerX == 0){
-                _mouse.x = e.layerX - _canvas.offsetLeft;
-                _mouse.y = e.layerY - _canvas.offsetTop;
+                _mouse.x = e.pageX - _canvas.offset().left;
+                _mouse.y = e.pageY - _canvas.offset().top;
             }
             else if(e.offsetX || e.offsetX == 0){
-                _mouse.x = e.offsetX - _canvas.offsetLeft;
-                _mouse.y = e.offsetY - _canvas.offsetTop;
+                _mouse.x = e.pageX - _canvas.offset().left;
+                _mouse.y = e.pageY - _canvas.offset().top;
             }
             _currentPiece = checkPieceClicked();
             if(_currentPiece != null){
@@ -135,12 +137,12 @@
         function updatePuzzle(e){
             _currentDropPiece = null;
             if(e.layerX || e.layerX == 0){
-                _mouse.x = e.layerX - _canvas.offsetLeft;
-                _mouse.y = e.layerY - _canvas.offsetTop;
+                _mouse.x = e.layerX - _canvas.offset().left;
+                _mouse.y = e.layerY - _canvas.offset().top;
             }
             else if(e.offsetX || e.offsetX == 0){
-                _mouse.x = e.offsetX - _canvas.offsetLeft;
-                _mouse.y = e.offsetY - _canvas.offsetTop;
+                _mouse.x = e.offsetX - _canvas.offset().left;
+                _mouse.y = e.offsetY - _canvas.offset().top;
             }
             _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
             var i;
@@ -212,10 +214,11 @@
             return o;
         }
 
-        jQuery(document).ready(function($){
-            $('.otros ul li').on('click', function(e){
-                e.preventDefault;
-                $('body').addClass('loading');
-                init( $(this).find('img').attr('data-big') );
-            })
+        $('.otros ul li').on('click', function(e){
+            e.preventDefault;
+            $('body').addClass('loading');
+            init( $(this).find('img').attr('data-big') );
         });
+
+        init();
+});

@@ -40,6 +40,7 @@
 @import "css/elements.less";
 
 @morado: #00362B;
+@verdefondo: #00E3AE;
 
 body {
 	background-attachment: fixed;
@@ -66,27 +67,67 @@ body {
 		.border-radius(5px,5px,5px,5px);
 	}
 
-	.otros {
+	.content {
 		margin:0 auto;
 		max-width: 934px;
 
-		ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-			text-align: center;
+		.brand {
+			float:left;
+			width:200px;
 
-			li {
-				display: inline-block;
-				margin:0 4px;
-				.transition;
-			}
-
-			li:hover {
-				.box-shadow(0 0 2px 2px rgba(0, 26, 20, 0.6));
-				.scale(1.3);
+			h1 {
+				background:transparent url('css/img/logo.png') no-repeat;
+				display:block;
+				height:220px;
+				margin-left:0;
+				margin-right:0;
+				overflow: hidden;
+				position: relative;
+				text-indent: -9999em;
+				width:200px;
 			}
 		}
+
+		.otros {
+			float:right;
+			width:715px;
+
+			h2 {
+				text-align: left;
+			}
+
+			ul {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+				text-align: left;
+
+				li {
+					background-color: @verdefondo;
+					display: inline-block;
+					margin:0 40px 10px 0;
+					padding: 4px;
+					.rounded(5px);
+					.transition;
+
+					img {
+						cursor:pointer;
+						margin:0;
+						padding: 0;
+					}
+				}
+
+				li:hover {
+					.box-shadow(0 0 2px 2px rgba(0, 26, 20, 0.6));
+					.scale(1.3);
+				}
+
+				li:nth-child(3n){
+					margin-right: 0;
+				}
+			}
+		}
+
 	}
 
 	.puzzle-container {
