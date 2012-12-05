@@ -101,14 +101,10 @@
             document.onmousedown = onPuzzleClick;
         }
         function onPuzzleClick(e){
-            if(e.layerX || e.layerX == 0){
-                _mouse.x = e.pageX - _canvas.offset().left;
-                _mouse.y = e.pageY - _canvas.offset().top;
-            }
-            else if(e.offsetX || e.offsetX == 0){
-                _mouse.x = e.pageX - _canvas.offset().left;
-                _mouse.y = e.pageY - _canvas.offset().top;
-            }
+            
+            _mouse.x = e.pageX - _canvas.offset().left;
+            _mouse.y = e.pageY - _canvas.offset().top;
+            
             _currentPiece = checkPieceClicked();
             if(_currentPiece != null){
                 _stage.clearRect(_currentPiece.xPos,_currentPiece.yPos,_pieceWidth,_pieceHeight);
@@ -136,14 +132,10 @@
         }
         function updatePuzzle(e){
             _currentDropPiece = null;
-            if(e.layerX || e.layerX == 0){
-                _mouse.x = e.pageX - _canvas.offset().left;
-                _mouse.y = e.pageY - _canvas.offset().top;
-            }
-            else if(e.offsetX || e.offsetX == 0){
-                _mouse.x = e.pageX - _canvas.offset().left;
-                _mouse.y = e.pageY - _canvas.offset().top;
-            }
+
+            _mouse.x = e.pageX - _canvas.offset().left;
+            _mouse.y = e.pageY - _canvas.offset().top;
+            
             _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
             var i;
             var piece;
