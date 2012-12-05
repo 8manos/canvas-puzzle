@@ -102,8 +102,8 @@
         }
         function onPuzzleClick(e){
             if(e.layerX || e.layerX == 0){
-                _mouse.x = e.layerX - _canvas.offset().left;
-                _mouse.y = e.layerY - _canvas.offset().top;
+                _mouse.x = e.pageX - _canvas.offset().left;
+                _mouse.y = e.pageY - _canvas.offset().top;
             }
             else if(e.offsetX || e.offsetX == 0){
                 _mouse.x = e.pageX - _canvas.offset().left;
@@ -137,12 +137,12 @@
         function updatePuzzle(e){
             _currentDropPiece = null;
             if(e.layerX || e.layerX == 0){
-                _mouse.x = e.layerX - _canvas.offset().left;
-                _mouse.y = e.layerY - _canvas.offset().top;
+                _mouse.x = e.pageX - _canvas.offset().left;
+                _mouse.y = e.pageY - _canvas.offset().top;
             }
             else if(e.offsetX || e.offsetX == 0){
-                _mouse.x = e.offsetX - _canvas.offset().left;
-                _mouse.y = e.offsetY - _canvas.offset().top;
+                _mouse.x = e.pageX - _canvas.offset().left;
+                _mouse.y = e.pageY - _canvas.offset().top;
             }
             _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
             var i;
