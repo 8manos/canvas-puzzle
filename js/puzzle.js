@@ -38,7 +38,7 @@
             _stage = _canvas[0].getContext('2d');
             _canvas[0].width = _puzzleWidth;
             _canvas[0].height = _puzzleHeight;
-            _canvas[0].style.border = "1px solid gray";
+            _canvas[0].style.border = "1px solid #004D3D";
         }
         function initPuzzle(){
             _pieces = [];
