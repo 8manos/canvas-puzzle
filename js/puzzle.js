@@ -78,6 +78,7 @@
                 }
             }
             document.onmousedown = shufflePuzzle;
+            document.ontouchstart = shufflePuzzle;
         }
         function shufflePuzzle(){
             _pieces = shuffleArray(_pieces);
@@ -99,6 +100,7 @@
                 }
             }
             document.onmousedown = onPuzzleClick;
+            document.ontouchstart = onPuzzleClick;
         }
         function onPuzzleClick(e){
             
@@ -114,6 +116,9 @@
                 _stage.restore();
                 document.onmousemove = updatePuzzle;
                 document.onmouseup = pieceDropped;
+
+                document.ontouchmove = updatePuzzle;
+                document.ontouchend = pieceDropped;
             }
         }
         function checkPieceClicked(){
@@ -169,6 +174,10 @@
         function pieceDropped(e){
             document.onmousemove = null;
             document.onmouseup = null;
+
+            document.ontouchmove = null;
+            document.ontouchend = null;
+
             if(_currentDropPiece != null){
                 var tmp = {xPos:_currentPiece.xPos,yPos:_currentPiece.yPos};
                 _currentPiece.xPos = _currentDropPiece.xPos;
