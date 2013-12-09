@@ -1,3 +1,39 @@
+ // Polyfill for requestAnimationFrame which I've modified from Paul Irish's original
+// See: http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+(function (global) {
+        var lastTime = 0,
+                vendors = ['ms', 'moz', 'webkit', 'o'];
+        
+        for (var x = 0; x < vendors.length && !global.requestAnimationFrame; ++x) {
+                global.requestAnimationFrame = global[vendors[x]+'RequestAnimationFrame'];
+                global.cancelAnimationFrame = global[vendors[x]+'CancelAnimationFrame'] || global[vendors[x]+'CancelRequestAnimationFrame'];
+        }
+        
+        global.nativeRAF = !!global.requestAnimationFrame; // store reference to whether it was natively supported or not (later we need to change increment value depending on if setInterval or requestAnimationFrame is used)
+
+        if (!global.requestAnimationFrame) {
+                global.requestAnimationFrame = function (callback, element) {
+                        
+                        var currTime = new Date().getTime(),
+                                timeToCall = Math.max(0, 16 - (currTime - lastTime)),
+                                id = global.setTimeout(function(){ 
+                                        callback(currTime + timeToCall);
+                                }, timeToCall);
+                        
+                        lastTime = currTime + timeToCall;
+                        
+                        return id;
+                        
+                };
+        }
+
+        if (!global.cancelAnimationFrame) {
+                global.cancelAnimationFrame = function (id) {
+                        clearTimeout(id);
+                };
+        }
+}(this));
+
  jQuery(document).ready(function($){
 
         const PUZZLE_DIFFICULTY = 5;
@@ -16,6 +52,26 @@
         var _currentDropPiece;  
 
         var _mouse;
+
+        var eventsMap  = {
+                select: "click",
+                down: "mousedown",
+                up: "mouseup",
+                move: "mousemove"
+            };
+        var touchSupported = false;
+
+        // We have a set API for handling events that typically map to mouse events
+        // But if the device supports touch events then we'll use those instead
+        if (Modernizr.touch) {
+            touchSupported = true;
+            eventsMap  = {
+                select: "touchstart",
+                down: "touchstart",
+                up: "touchend",
+                move: "touchmove"
+            };
+        }
 
         function init( img ){
             if( img == undefined ){
@@ -77,8 +133,11 @@
                     yPos += _pieceHeight;
                 }
             }
-            document.onmousedown = shufflePuzzle;
-            document.ontouchstart = shufflePuzzle;
+            if( !touchSupported ){
+                document.onmousedown = shufflePuzzle;
+            }else{
+                document.ontouchstart = shufflePuzzle;
+            }
         }
         function shufflePuzzle(){
             _pieces = shuffleArray(_pieces);
@@ -99,14 +158,28 @@
                     yPos += _pieceHeight;
                 }
             }
-            document.onmousedown = onPuzzleClick;
-            document.ontouchstart = onPuzzleClick;
+            if( !touchSupported ){
+                document.onmousedown = onPuzzleClick;
+            }else{
+                document.ontouchstart = null;
+                $(document).on('touchstart',function( e ){
+                    var e = e.originalEvent;
+                    onPuzzleClick( e ); 
+                });
+            }
         }
         function onPuzzleClick(e){
+            // alert(e);
+
+            if( !Modernizr.touch ){
+                _mouse.x = e.pageX - _canvas.offset().left;
+                _mouse.y = e.pageY - _canvas.offset().top;
+            }else{
+                _mouse.x = e.touches[0].pageX - _canvas.offset().left;
+                _mouse.y = e.touches[0].pageY - _canvas.offset().top;
+            }
             
-            _mouse.x = e.pageX - _canvas.offset().left;
-            _mouse.y = e.pageY - _canvas.offset().top;
-            
+            // alert("x "+_mouse.x+" y: "+_mouse.y);
             _currentPiece = checkPieceClicked();
             if(_currentPiece != null){
                 _stage.clearRect(_currentPiece.xPos,_currentPiece.yPos,_pieceWidth,_pieceHeight);
@@ -114,11 +187,17 @@
                 _stage.globalAlpha = .9;
                 _stage.drawImage(_img, _currentPiece.sx, _currentPiece.sy, _pieceWidth, _pieceHeight, _mouse.x - (_pieceWidth / 2), _mouse.y - (_pieceHeight / 2), _pieceWidth, _pieceHeight);
                 _stage.restore();
-                document.onmousemove = updatePuzzle;
-                document.onmouseup = pieceDropped;
 
-                document.ontouchmove = updatePuzzle;
-                document.ontouchend = pieceDropped;
+                if( !touchSupported ){
+                    $(document).bind( 'mousemove', updatePuzzle );
+                    $(document).bind( 'mouseup', pieceDropped );
+                }else{
+                    $('#canvas').bind( 'touchmove', function(e){
+                        var e = e.originalEvent;
+                        updatePuzzle(e);
+                    });
+                    $('#canvas').bind( 'touchend', pieceDropped );
+                }
             }
         }
         function checkPieceClicked(){
@@ -136,10 +215,21 @@
             return null;
         }
         function updatePuzzle(e){
+
+            e.preventDefault();
+
             _currentDropPiece = null;
 
-            _mouse.x = e.pageX - _canvas.offset().left;
-            _mouse.y = e.pageY - _canvas.offset().top;
+            if( !Modernizr.touch ){
+                _mouse.x = e.pageX - _canvas.offset().left;
+                _mouse.y = e.pageY - _canvas.offset().top;
+            }else{
+                _mouse.x = e.touches[0].pageX - _canvas.offset().left;
+                _mouse.y = e.touches[0].pageY - _canvas.offset().top;
+            }
+
+            $('#x').text(_mouse.x);
+            $('#y').text(_mouse.y);
             
             _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
             var i;
@@ -172,11 +262,12 @@
             _stage.strokeRect( _mouse.x - (_pieceWidth / 2), _mouse.y - (_pieceHeight / 2), _pieceWidth,_pieceHeight);
         }
         function pieceDropped(e){
-            document.onmousemove = null;
-            document.onmouseup = null;
-
-            document.ontouchmove = null;
-            document.ontouchend = null;
+            if( !touchSupported ){
+                document.onmousemove = null;
+                document.onmouseup = null;
+            }else{
+                $('#canvas').unbind(); 
+            }
 
             if(_currentDropPiece != null){
                 var tmp = {xPos:_currentPiece.xPos,yPos:_currentPiece.yPos};
