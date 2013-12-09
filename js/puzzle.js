@@ -1,4 +1,42 @@
- // Polyfill for requestAnimationFrame which I've modified from Paul Irish's original
+
+// Fullscreen
+
+
+
+function goFullScreen() {
+
+    var e = document.getElementById("canvas");
+
+    if (RunPrefixMethod(document, "FullScreen") || RunPrefixMethod(document, "IsFullScreen")) {
+        RunPrefixMethod(document, "CancelFullScreen");
+    }
+    else {
+        RunPrefixMethod(e, "RequestFullScreen");
+    }
+
+}
+
+var pfx = ["webkit", "moz", "ms", "o", ""];
+function RunPrefixMethod(obj, method) {
+    
+    var p = 0, m, t;
+    while (p < pfx.length && !obj[m]) {
+        m = method;
+        if (pfx[p] == "") {
+            m = m.substr(0,1).toLowerCase() + m.substr(1);
+        }
+        m = pfx[p] + m;
+        t = typeof obj[m];
+        if (t != "undefined") {
+            pfx = [pfx[p]];
+            return (t == "function" ? obj[m]() : obj[m]);
+        }
+        p++;
+    }
+
+}
+
+// Polyfill for requestAnimationFrame which I've modified from Paul Irish's original
 // See: http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 (function (global) {
         var lastTime = 0,
@@ -140,6 +178,7 @@
             }
         }
         function shufflePuzzle(){
+            goFullScreen();
             _pieces = shuffleArray(_pieces);
             _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
             var i;
@@ -217,6 +256,7 @@
         function updatePuzzle(e){
 
             e.preventDefault();
+            e.stopPropagation();
 
             _currentDropPiece = null;
 
