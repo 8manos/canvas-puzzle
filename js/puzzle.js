@@ -189,8 +189,8 @@
                 _stage.restore();
 
                 if( !touchSupported ){
-                    $(document).bind( 'mousemove', updatePuzzle );
-                    $(document).bind( 'mouseup', pieceDropped );
+                    document.onmousemove = updatePuzzle;
+                    document.onmouseup = pieceDropped;
                 }else{
                     $('#canvas').bind( 'touchmove', function(e){
                         var e = e.originalEvent;
@@ -280,6 +280,7 @@
         }
         function resetPuzzleAndCheckWin(){
             _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
+
             var gameWin = true;
             var i;
             var piece;
