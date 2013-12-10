@@ -74,6 +74,18 @@ function RunPrefixMethod(obj, method) {
 
  jQuery(document).ready(function($){
 
+        /* LAYOUT */
+        $('.flexslider').flexslider({
+            animation: "slide",
+            minItems: 4,
+            move: 2,
+            itemWidth: 200,
+            itemMargin: 5,
+            slideshow: false,
+            controlNav: false
+        });
+
+        /* PUZZLE */
         const PUZZLE_DIFFICULTY = 5;
         const PUZZLE_HOVER_TINT = '#009900';
 
@@ -132,7 +144,7 @@ function RunPrefixMethod(obj, method) {
             _stage = _canvas[0].getContext('2d');
             _canvas[0].width = _puzzleWidth;
             _canvas[0].height = _puzzleHeight;
-            _canvas[0].style.border = "1px solid #004D3D";
+            // _canvas[0].style.border = "1px solid #004D3D";
         }
         function initPuzzle(){
             _pieces = [];
@@ -141,7 +153,7 @@ function RunPrefixMethod(obj, method) {
             _currentDropPiece = null;
             _stage.drawImage(_img, 0, 0, _puzzleWidth, _puzzleHeight, 0, 0, _puzzleWidth, _puzzleHeight);
             $('body').removeClass('loading');
-            createTitle("Click para empezar!");
+            // createTitle("Click para empezar!");
             buildPieces();
         }
         function createTitle(msg){
@@ -171,14 +183,22 @@ function RunPrefixMethod(obj, method) {
                     yPos += _pieceHeight;
                 }
             }
+
+            $('#play .ir').on('click', function(e){
+                e.preventDefault();
+                
+                $('#play').fadeOut( 888 , function(){
+                    shufflePuzzle();
+                });
+            });
             if( !touchSupported ){
-                document.onmousedown = shufflePuzzle;
+                // document.onmousedown = shufflePuzzle;
             }else{
-                document.ontouchstart = shufflePuzzle;
+                // document.ontouchstart = shufflePuzzle;
             }
         }
         function shufflePuzzle(){
-            goFullScreen();
+            // goFullScreen();
             _pieces = shuffleArray(_pieces);
             _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
             var i;
@@ -198,7 +218,7 @@ function RunPrefixMethod(obj, method) {
                 }
             }
             if( !touchSupported ){
-                document.onmousedown = onPuzzleClick;
+                $('#canvas').on('mousedown', onPuzzleClick);
             }else{
                 document.ontouchstart = null;
                 $(document).on('touchstart',function( e ){
@@ -267,9 +287,6 @@ function RunPrefixMethod(obj, method) {
                 _mouse.x = e.touches[0].pageX - _canvas.offset().left;
                 _mouse.y = e.touches[0].pageY - _canvas.offset().top;
             }
-
-            $('#x').text(_mouse.x);
-            $('#y').text(_mouse.y);
             
             _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
             var i;
@@ -347,10 +364,11 @@ function RunPrefixMethod(obj, method) {
             return o;
         }
 
-        $('.otros ul li').on('click', function(e){
+        $('.otros ul.slides li').on('click', function(e){
             e.preventDefault;
             $('body').addClass('loading');
             init( $(this).find('img').attr('data-big') );
+            $('#play').fadeIn();
         });
 
         init();
