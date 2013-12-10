@@ -85,6 +85,26 @@ function RunPrefixMethod(obj, method) {
             controlNav: false
         });
 
+        $(window).on('load', function(){
+            $('body').addClass('otros-closed');
+            var otros = $('.otros');
+            var otros_alto = otros.height();
+            otros.css( 'bottom', -otros_alto-10+'px' );
+        });
+
+        $('#mas').on( 'click', function(){
+            var otros = $('.otros');
+
+            if( $('body').hasClass('otros-closed') ){
+                $('body').removeClass('otros-closed').addClass('otros-open');
+                otros.css( 'bottom', 0 );
+            }else{
+                $('body').removeClass('otros-open').addClass('otros-closed');
+                var otros_alto = otros.height();
+                otros.css( 'bottom', -otros_alto-10+'px' );
+            }
+        });
+
         /* PUZZLE */
         const PUZZLE_DIFFICULTY = 5;
         const PUZZLE_HOVER_TINT = '#009900';
@@ -368,6 +388,7 @@ function RunPrefixMethod(obj, method) {
             e.preventDefault;
             $('body').addClass('loading');
             init( $(this).find('img').attr('data-big') );
+            $('#mas').click();
             $('#play').fadeIn();
         });
 
