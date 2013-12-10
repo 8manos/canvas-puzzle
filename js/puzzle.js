@@ -82,7 +82,8 @@ function RunPrefixMethod(obj, method) {
             itemWidth: 200,
             itemMargin: 5,
             slideshow: false,
-            controlNav: false
+            controlNav: false,
+            touch: true
         });
 
         $(window).on('load', function(){
@@ -92,7 +93,9 @@ function RunPrefixMethod(obj, method) {
             otros.css( 'bottom', -otros_alto-10+'px' );
         });
 
-        $('#mas').on( 'click', function(){
+        $('#mas').on( 'click touchend', function(e){
+            e.preventDefault();
+
             var otros = $('.otros');
 
             if( $('body').hasClass('otros-closed') ){
@@ -192,21 +195,18 @@ function RunPrefixMethod(obj, method) {
                 }
             }
 
-            $('#play .ir').on('click', function(e){
+            $('#play .ir').on('click touchend', function(e){
                 e.preventDefault();
+                if( Modernizr.touch ){
+                    goFullScreen();
+                }
                 
                 $('#play').fadeOut( 888 , function(){
                     shufflePuzzle();
                 });
             });
-            if( !touchSupported ){
-                // document.onmousedown = shufflePuzzle;
-            }else{
-                // document.ontouchstart = shufflePuzzle;
-            }
         }
         function shufflePuzzle(){
-            // goFullScreen();
             _pieces = shuffleArray(_pieces);
             _stage.clearRect(0,0,_puzzleWidth,_puzzleHeight);
             var i;
@@ -228,10 +228,11 @@ function RunPrefixMethod(obj, method) {
             if( !touchSupported ){
                 $('#canvas').on('mousedown', onPuzzleClick);
             }else{
-                document.ontouchstart = null;
-                $(document).on('touchstart',function( e ){
-                    var e = e.originalEvent;
-                    onPuzzleClick( e ); 
+                // document.ontouchstart = null;
+                $('#canvas').on('touchstart',function( e ){
+                     var e = e.originalEvent;
+                     e.preventDefault();
+                     onPuzzleClick( e ); 
                 });
             }
         }
@@ -263,7 +264,11 @@ function RunPrefixMethod(obj, method) {
                         var e = e.originalEvent;
                         updatePuzzle(e);
                     });
-                    $('#canvas').bind( 'touchend', pieceDropped );
+                    
+                    $('#canvas').bind( 'touchend', function(ev){
+                        var e = ev.originalEvent;
+                        pieceDropped(e);
+                    });
                 }
             }
         }
@@ -331,7 +336,8 @@ function RunPrefixMethod(obj, method) {
                 document.onmousemove = null;
                 document.onmouseup = null;
             }else{
-                $('#canvas').unbind(); 
+                // $('#canvas').unbind( 'touchmove' );
+                $('#canvas').unbind( 'touchend' ); 
             }
 
             if(_currentDropPiece != null){
@@ -365,6 +371,7 @@ function RunPrefixMethod(obj, method) {
             document.onmousedown = null;
             document.onmousemove = null;
             document.onmouseup = null;
+            $('#canvas').unbind();
             initPuzzle();
         }
         function shuffleArray(o){
@@ -373,8 +380,9 @@ function RunPrefixMethod(obj, method) {
         }
 
         $('.otros ul.slides li').on('click', function(e){
-            e.preventDefault;
+            e.preventDefault();
             $('body').addClass('loading');
+            gameOver();
             init( $(this).find('img').attr('data-big') );
             $('#mas').click();
             $('#play').fadeIn();
