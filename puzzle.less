@@ -24,6 +24,38 @@
     font-style: normal;
 
 }
+/*
+	Fuentes
+*/
+
+@font-face{
+    font-family:"VAG-Thin";
+    src:url("../fuentes/739798/86f553bb-9889-4e15-8969-ee64b49110e1.eot?#iefix");
+    src:url("../fuentes/739798/86f553bb-9889-4e15-8969-ee64b49110e1.eot?#iefix") format("eot"),
+        url("../fuentes/739798/5674c507-56c6-44d0-a73f-536f772201a4.woff") format("woff"),
+        url("../fuentes/739798/901e337a-35a9-4313-b7f2-e7557b153a9b.ttf") format("truetype"),
+        url("../fuentes/739798/82ff45d7-0bff-43e7-9dae-e19141e58f73.svg#82ff45d7-0bff-43e7-9dae-e19141e58f73") format("svg");
+}
+
+@font-face{
+    font-family:"VAG-Light";
+    src:url("../fuentes/739801/44b3f5eb-d85f-4909-809d-6c122c12ea63.eot?#iefix");
+    src:url("../fuentes/739801/44b3f5eb-d85f-4909-809d-6c122c12ea63.eot?#iefix") format("eot"),
+        url("../fuentes/739801/1a4c2794-fc7f-4a89-ab1c-0be23dbee8b1.woff") format("woff"),
+        url("../fuentes/739801/6023c3ba-862b-4de6-b8c6-59ae434b7629.ttf") format("truetype"),
+        url("../fuentes/739801/0f3940be-21d0-4e65-9247-2dc7c12caef3.svg#0f3940be-21d0-4e65-9247-2dc7c12caef3") format("svg");
+}
+
+@font-face{
+    font-family:"VAG-Bold";
+    src:url("../fuentes/739804/643a3fec-739a-44e6-9f17-e26e0c711eef.eot?#iefix");
+    src:url("../fuentes/739804/643a3fec-739a-44e6-9f17-e26e0c711eef.eot?#iefix") format("eot"),
+        url("../fuentes/739804/55c27d30-e9d4-405b-a4a2-954120b0bb2c.woff") format("woff"),
+        url("../fuentes/739804/12f01f1a-0c0c-44ee-9d95-8c597ae8d67e.ttf") format("truetype"),
+        url("../fuentes/739804/fdd56b34-68a5-4fee-b9ce-30b282397623.svg#fdd56b34-68a5-4fee-b9ce-30b282397623") format("svg");
+}
+
+/* Fin fuentes */
 
 @import "css/elements.less";
 @import "css/flexslider";
@@ -38,24 +70,51 @@ body {
 
 body {
 	background-attachment: fixed;
-	background-color: black;
-	background-image: url('css/img/img_fondo.png');
+	background-image: url(css/img/fondo-rooommm.jpg);
+	background-position: center top;
+	background-repeat: no-repeat;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	background-size: cover;
 	color: #00362B;
-	font-family: 'skiaregular';
+	font-family:"VAG-Thin";
 	text-align: center;
 
-	h1 {
-		font-size: 2.4em;
+	h1{
+	    font-family:"VAG-Bold";
+	    font-size: 2.4em;
+	    letter-spacing: 2px;
+	    text-align: center;
 	}
 
-	h1 ,
-	h2 {
-		font-family: 'airstream_itcregular';
-		letter-spacing: 2px;
-		text-shadow: 0px 1px 0px rgb(255, 255, 255);
+	h2{
+	    display: inline-block;
+	    font-family:"VAG-Thin";
+	}
+
+	header{
+	    padding: 1em 0 0;
+	    margin-bottom: -1em;
+	    overflow: hidden;
+	    width: 100%;
+	}
+
+	header h1{
+	    display: inline-block;
+	    font-size: 4em;
+	    text-shadow: 0 2px 0 #FFF;
+	}
+	header h2{
+	    display: block;
+	    padding-bottom: 0;
+	    text-shadow: 0 1px 0 #FFF;
+	}
+
+	#logo{
+	    display: inline-block;
+	    vertical-align: middle;
+	    float: left;
+	    margin-right: 1em;
 	}
 
 	canvas {
