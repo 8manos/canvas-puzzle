@@ -197,7 +197,7 @@ function RunPrefixMethod(obj, method) {
 
             $('#play .ir').on('click touchend', function(e){
                 e.preventDefault();
-                if( Modernizr.touch && Modernizr.mq('(min-width: 950px)')){
+                if( Modernizr.touch && Modernizr.mq('(min-width: 950px) and (orientation: landscape)')){
                     goFullScreen();
                 }
                 
